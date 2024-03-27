@@ -6,6 +6,14 @@ const getFullTranslate = language => language === 'uz' ? { kb: uzMenu, translate
 
 const getTranslate = language => language === 'uz' ? uz : ru
 
+const postUser = async (path, data) => {
+  let response = await axios.post(`${process.env.SERVER_URI}/${path}`, {
+    data
+  })
+  if (response.status === 200) return 'success'
+  else return 'error'
+}
+
 const getUser = async (userId) => {
   let response = await axios.get(`${process.env.SERVER_URI}/user/${userId}`)
   if (response.status === 200) return response.data
@@ -16,5 +24,6 @@ const getUser = async (userId) => {
 module.exports = {
   getFullTranslate, 
   getTranslate,
+  postUser,
   getUser
 }

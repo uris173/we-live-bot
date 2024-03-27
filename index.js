@@ -5,9 +5,10 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const routers = require('./router')
 
-require('./bot/bot')
 app.use(cors())
 app.use(express.json());
+
+require('./bot/bot')
 
 const dev = async () => {
   try {

@@ -5,8 +5,6 @@ const user = new Schema({
   name: String,
   username: String,
   phone: String,
-  lat: String,
-  lon: String,
   action: String,
   language: String
 })
