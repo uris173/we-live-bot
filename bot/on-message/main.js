@@ -1,7 +1,7 @@
 const { bot } = require('../bot')
 const { languageKb } = require('../options/keyboards')
 const User = require('../../models/user')
-const { getFullTranslate, getUser } = require('../options/helper')
+const { getFullTranslate, getUser, post } = require('../options/helper')
 
 const start = async (chatId) => {
   const findUser = await User.findOne({userId: chatId})
@@ -55,7 +55,9 @@ const getPhone = async (chatId, msg) => {
     }
   })
 
-
+  let response = await post('user', findUser)
+  if (response === 'success')
+    return bot.sendMessage(chatId, translate.selectMenu, kb)
 }
 
 const getAboutUs = async (chatId, language) => {
