@@ -1,5 +1,6 @@
 const languageKb = {
   reply_markup: {
+    parse_mode: 'HTML',
     resize_keyboard: true,
     keyboard: [
       ["O'zbek tili 🇺🇿", 'Русский язык 🇷🇺']
@@ -12,7 +13,7 @@ const uzMenu = {
     resize_keyboard: true,
     keyboard: [
       ["Katalog 🗂", "Biz haqimizda ℹ️", "Kontaktlar 📞"],
-      ["Sharh qoldiring ✍️", "Savat 🧺"],
+      ["Sharh qoldiring ✍️"], // "Savat 🧺"
       ["Sozlamalar ⚙️"]
     ]
   }
@@ -23,7 +24,7 @@ const ruMenu = {
     resize_keyboard: true,
     keyboard: [
       ["Каталог 🗂", "О нас ℹ️", "Контакты 📞"],
-      ["Оставить отзыв ✍️", "Корзина 🧺"],
+      ["Оставить отзыв ✍️"], // "Корзина 🧺"
       ["Настройки ⚙️"]
     ]
   }
