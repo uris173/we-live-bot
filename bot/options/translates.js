@@ -15,6 +15,11 @@ const uz = {
   contactsText: `Telefon: <a href="tel:${links.phoneLink}">${links.phone}</a>\nTelegram: ${links.telegram}\nInstagram: ${links.instagram}`,
   leaveFeedbackText: "Xizmatimizga 1 dan 5 🌟 gacha baho bering",
   enterFeedbackComment: "Iltimos, sharhingizni yozing... Xizmatni yaxshilash bo'yicha har qanday taklif va fikr-mulohazalaringizni yozing.",
+  costText: "Narx:",
+  priceText: "so'm", 
+  changelang: "Tilni o'zgartirish 🌐",
+  chooseLang: "Til tanlang 🌐",
+  selectAction: "Harakatni tanlang...",
 
   // error messages
   incPhone: `<i>"Kontaktni yuborish 📞"</i> <b>tugmasini bosib telefon raqamingizni yuboring</b>`,
@@ -43,6 +48,11 @@ const ru = {
   contactsText: `Телефон: <a href="tel:${links.phoneLink}">${links.phone}</a>\nТелеграм: ${links.telegram}\nИнстаграм: ${links.instagram}`,
   leaveFeedbackText: "Оцените пожалуйста наш сервис от 1 до 5 🌟",
   enterFeedbackComment: "Пожалуйста напишите свой отзыв... Какие есть предложения по улучшению сервиса и ваш отзыв.",
+  costText: "Цена:",
+  priceText: "сум", 
+  changelang: "Изменить язык 🌐",
+  chooseLang: "Выберите язык 🌐",
+  selectAction: "Выберите действие...",
 
   // error messages
   incPhone: `<b>Отправьте номер телефона нажав на кнопку</b> <i>"Отправить контакт 📞"</i>`,

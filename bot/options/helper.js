@@ -11,7 +11,7 @@ const postData = async (path, data) => {
   let response = await axios.post(`${url}/${path}`, {
     data
   })
-  if (response.status === 201) return 'success'
+  if (response.data?.msg || response.data) return 'success'
 }
 
 const getData = async (path) => {
@@ -20,10 +20,24 @@ const getData = async (path) => {
   else return 'error'
 }
 
+const getProductInfo = (product, costText, priceText) => {
+  let values = ``
+  product?.attributes.forEach(element => {
+    let atrValues = element?.value.map(val => `${val?.value}: <b>${val?.prcie.toLocaleString()}</b> ${priceText}\n`)
+    values += `${element?.title.toUpperCase()} - ${atrValues}\n`
+  })
+  const text = `<i>${product.category.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price} ${priceText}\n\n${product.description}\n\n${values}`
+  return {
+    img: `${url}/${product.img[0]}`,
+    text,
+  }
+}
+
 
 module.exports = {
   getFullTranslate, 
   getTranslate,
   postData,
-  getData
+  getData,
+  getProductInfo
 }

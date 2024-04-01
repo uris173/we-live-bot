@@ -1,6 +1,6 @@
 const User = require('../../models/user')
 const { bot } = require('../bot')
-const { start } = require('../on-message/main')
+const { start, getProduct } = require('../on-message/main')
 const { userAction, menu, userMenuListener } = require('../options/selection')
 
 bot.on('message', async msg => {
@@ -18,5 +18,8 @@ bot.on('message', async msg => {
 
     if (menu[userMenuListener(language, text)])
       return menu[userMenuListener(language, text)](chatId, language, msg)
+
+    if (text?.slice(0, 9) === 'productId')
+      getProduct(chatId, language, msg)
   }
 })

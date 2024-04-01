@@ -1,3 +1,5 @@
+const { ru, uz } = require("./translates")
+
 const languageKb = {
   reply_markup: {
     parse_mode: 'HTML',
@@ -32,7 +34,7 @@ const ruMenu = {
 
 
 module.exports = {
-  languageKb, 
+  languageKb,
   uzMenu,
   ruMenu
 }

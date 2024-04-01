@@ -1,7 +1,7 @@
-const { bot } = require('../bot');
+const { bot, sliceIntoChunks } = require('../bot');
 const User = require('../../models/user')
 const Feedback = require('../../models/feedback')
-const { getFullTranslate, getTranslate } = require('../options/helper');
+const { getFullTranslate, getTranslate, getData } = require('../options/helper');
 
 const backToMenu = async (chatId, language, query) => {
   bot.answerCallbackQuery(query.id).then(() => {
@@ -30,8 +30,35 @@ const getFeedbackRate = async (chatId, language, query) => {
   })
 }
 
+const backToCategory = async (chatId, language, query) => {
+  bot.answerCallbackQuery(query.id).then(async () => {
+    bot.deleteMessage(chatId, query.message.message_id)
+    const translate = getTranslate(language)
+    try {
+      let { categories } = await getData(`category/all?language=${language}`)
+      categories = categories.filter(val => val.title)
+      categories = categories.map(({title}) => ({
+        text: title || 'titleNotFound',
+        switch_inline_query_current_chat: title || 'titleNotFound'
+      }))
+
+      let slicedVal = sliceIntoChunks(categories, 2)
+      slicedVal.push([{text: translate.back, callback_data: 'back to menu'}])
+    
+      bot.sendMessage(chatId, translate.catalogText, {
+        reply_markup: {
+          inline_keyboard: slicedVal
+        }
+      })
+    } catch (error) {
+      bot.sendMessage(chatId, translate.errorServerResponse)
+    }
+  })
+}
+
 
 module.exports = {
   backToMenu,
-  getFeedbackRate
+  getFeedbackRate,
+  backToCategory
 }

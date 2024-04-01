@@ -2,7 +2,7 @@ const { bot, sliceIntoChunks } = require('../bot')
 const { languageKb } = require('../options/keyboards')
 const User = require('../../models/user')
 const Feedback = require('../../models/feedback')
-const { getFullTranslate, postData, getTranslate, getData } = require('../options/helper')
+const { getFullTranslate, postData, getTranslate, getData, getProductInfo } = require('../options/helper')
 
 const start = async (chatId) => {
   const findUser = await User.findOne({userId: chatId})
@@ -11,49 +11,44 @@ const start = async (chatId) => {
     await new User({userId: chatId, action: 'enter language'}).save()
     return bot.sendMessage(chatId, `Здравствуйте, выберите язык 🌐.\nAssalomu alaykum, til tanlang. 🌐`, languageKb)
   }
-  if (!findUser.language) return bot.sendMessage(chatId, 'Выберите язык 🌐\nTil tanlang. 🌐', languageKb)
-  if (!findUser.phone) {
-    await User.findByIdAndUpdate(findUser._id, {action: 'enter phone'})
-    return bot.sendMessage(chatId, translate.enterPhone, {
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: [ [{text: translate.requestContact, request_contact: true}] ]
-      }
-    })
-  }
-  if (feedback) {
-    const translate = getTranslate(findUser.language)
-    return bot.sendMessage(chatId, translate.enterFeedback, {
+  if (!findUser.language) return bot.sendMessage(chatId, 'Выберите язык 🌐\nTil tanlang 🌐', languageKb)
+
+  let { kb, translate } = getFullTranslate(findUser.language)
+  if (!findUser.phone) return await User.findByIdAndUpdate(findUser._id, {action: 'enter phone'})
+
+  if (feedback) return bot.sendMessage(chatId, translate.enterFeedback, {
       parse_mode: 'HTML',
       reply_markup: {
         resize_keyboard: true,
         keyboard: [ [translate.skip] ]
       }
     })
-  }
 
   await User.findByIdAndUpdate(findUser._id, {$set: {action: ''}})
-  let { kb, translate } = getFullTranslate(findUser.language)
   bot.sendMessage(chatId, translate.selectMenu, kb)
 }
 
 const getLanguage = async (chatId, msg, text) => {
-  let language = text === "O'zbek tili 🇺🇿" ? 'uz' : 'ru'
-  let { kb, translate } = getFullTranslate(language)
-
-  const findUser = await User.findOne({userId: chatId})
-  await User.findByIdAndUpdate(findUser._id, {$set: {language}})
-
-  if (!findUser.phone) {
-    await User.findByIdAndUpdate(findUser._id, {$set: {action: 'enter phone'}})
-    return bot.sendMessage(chatId, translate.enterPhone, {
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: [ [{text: translate.requestContact, request_contact: true}] ]
-      }
-    })
+  if (text !== '/start') {
+    let language = text === "O'zbek tili 🇺🇿" ? 'uz' : 'ru'
+    let { kb, translate } = getFullTranslate(language)
+  
+    const findUser = await User.findOne({userId: chatId})
+    await User.findByIdAndUpdate(findUser._id, {$set: {language}})
+  
+    if (!findUser.phone) {
+      await User.findByIdAndUpdate(findUser._id, {$set: {action: 'enter phone'}})
+      return bot.sendMessage(chatId, translate.enterPhone, {
+        reply_markup: {
+          resize_keyboard: true,
+          keyboard: [ [{text: translate.requestContact, request_contact: true}] ]
+        }
+      })
+    } else {
+      await User.findByIdAndUpdate(findUser._id, {$set: {action: ''}})
+      bot.sendMessage(chatId, translate.selectMenu, kb)
+    }
   }
-  else bot.sendMessage(chatId, translate.selectMenu, kb)
 }
 
 const getPhone = async (chatId, msg) => {
@@ -94,9 +89,10 @@ const getCategory = async (chatId, language) => {
 
   try {
     let { categories } = await getData(`category/all?language=${language}`)
+    categories = categories.filter(val => val.title)
     categories = categories.map(({title}) => ({
-      text: title,
-      switch_inline_query_current_chat: title
+      text: title || 'titleNotFound',
+      switch_inline_query_current_chat: title || 'titleNotFound'
     }))
     
     let slicedVal = sliceIntoChunks(categories, 2)
@@ -105,6 +101,29 @@ const getCategory = async (chatId, language) => {
     bot.sendMessage(chatId, translate.catalogText, {
       reply_markup: {
         inline_keyboard: slicedVal
+      }
+    })
+  } catch (error) {
+    bot.sendMessage(chatId, translate.errorServerResponse)
+  }
+}
+
+const getProduct = async (chatId, language, msg) => {
+  const productId = msg.text.split('-')[1]
+  const translate = getTranslate(language)
+  bot.deleteMessage(chatId, msg.message_id - 1)
+  bot.deleteMessage(chatId, msg.message_id)
+  try {
+    const { product } = await getData(`product/${productId}?language=${language}`)
+    let { img, text } = getProductInfo(product, translate.costText, translate.priceText)
+    console.log(img);
+    bot.sendPhoto(chatId, img, {
+      parse_mode: 'HTML',
+      caption: text,
+      reply_markup: {
+        inline_keyboard: [
+          [{text: translate.back, callback_data: 'back to category'}]
+        ]
       }
     })
   } catch (error) {
@@ -173,14 +192,42 @@ const getFeedbackComment = async (chatId, msg) => {
   }
 }
 
+const getSetting = (chatId, language) => {
+  const translate = getTranslate(language)
+  bot.sendMessage(chatId, translate.selectAction, {
+    reply_markup: {
+      resize_keyboard: true,
+      keyboard: [
+        [translate.changelang],
+        [translate.back]
+      ]
+    }
+  })
+}
+
+const getBackToMenu = (chatId, language) => {
+  let { kb, translate } = getFullTranslate(language)
+  bot.sendMessage(chatId, translate.selectMenu, kb)
+}
+
+const changelang = async (chatId, language) => {
+  await User.findOneAndUpdate({userId: chatId}, {$set: {action: 'enter language'}})
+  let translate = getTranslate(language)
+  bot.sendMessage(chatId, translate.chooseLang, languageKb)
+}
+
 
 module.exports = {
   start,
   getLanguage,
   getPhone,
   getCategory,
+  getProduct,
   getAboutUs,
   getContacts,
   enterFeedback,
-  getFeedbackComment
+  getFeedbackComment,
+  getSetting,
+  getBackToMenu,
+  changelang
 }

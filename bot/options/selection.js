@@ -1,6 +1,7 @@
 const {
   getFeedbackRate,
-  backToMenu
+  backToMenu,
+  backToCategory
 } = require('../callback/main')
 
 const {
@@ -10,7 +11,10 @@ const {
   getAboutUs,
   getContacts,
   enterFeedback,
-  getFeedbackComment
+  getFeedbackComment,
+  getSetting,
+  getBackToMenu,
+  changelang
 } = require('../on-message/main')
 const { uz, ru } = require('./translates')
 
@@ -30,11 +34,15 @@ const menu = {
   'aboutUs': getAboutUs,
   'contacts': getContacts,
   'feedback': enterFeedback,
+  'settings': getSetting,
+  'back': getBackToMenu,
+  'changelang': changelang
 }
 
 const callbacks = {
   'back to menu': backToMenu,
-  'feedback': getFeedbackRate
+  'feedback': getFeedbackRate,
+  'back to category': backToCategory
 }
 
 

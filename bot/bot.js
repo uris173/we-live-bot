@@ -4,7 +4,7 @@ const bot = new TelegramBot(process.env.TOKEN, {
   polling: true
 })
 
-const url = 'http://192.168.24.102:3016'
+const url = process.env.SERVER_URI
 
 const sliceIntoChunks = (arr, chunkSize) => {
   const res = [];
@@ -24,3 +24,4 @@ module.exports = {
 
 require('./branches/on.message')
 require('./branches/callback')
+require('./branches/inline-query')

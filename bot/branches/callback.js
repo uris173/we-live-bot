@@ -12,4 +12,6 @@ bot.on('callback_query', async query => {
     callbacks['back to menu'](chatId, language, query)
   if (queryData.slice(0, 8) === 'feedback')
     callbacks['feedback'](chatId, language, query)
+  if (query.data === 'back to category')
+    callbacks['back to category'](chatId, language, query)
 })
