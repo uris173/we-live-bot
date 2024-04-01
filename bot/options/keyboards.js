@@ -14,9 +14,9 @@ const uzMenu = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      ["Katalog 🗂", "Biz haqimizda ℹ️", "Kontaktlar 📞"],
-      ["Sharh qoldiring ✍️"], // "Savat 🧺"
-      ["Sozlamalar ⚙️"]
+      [uz.catalog, uz.aboutUs, uz.contacts],
+      [uz.feedback, uz.cart],
+      [uz.settings]
     ]
   }
 }
@@ -25,9 +25,9 @@ const ruMenu = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      ["Каталог 🗂", "О нас ℹ️", "Контакты 📞"],
-      ["Оставить отзыв ✍️"], // "Корзина 🧺"
-      ["Настройки ⚙️"]
+      [ru.catalog, ru.aboutUs, ru.contacts],
+      [ru.feedback, ru.cart],
+      [ru.settings]
     ]
   }
 }

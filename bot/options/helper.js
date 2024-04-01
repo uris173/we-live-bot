@@ -24,7 +24,7 @@ const getProductInfo = (product, costText, priceText) => {
   let values = ``
   product?.attributes.forEach(element => {
     let atrValues = element?.value.map(val => `${val?.value}: <b>${val?.prcie.toLocaleString()}</b> ${priceText}\n`)
-    values += `${element?.title.toUpperCase()} - ${atrValues}\n`
+    values += `${element?.title.charAt(0).toUpperCase() + element?.title.slice(1)} - ${atrValues}\n`
   })
   const text = `<i>${product.category.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price} ${priceText}\n\n${product.description}\n\n${values}`
   return {

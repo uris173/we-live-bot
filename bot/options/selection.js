@@ -3,6 +3,7 @@ const {
   backToMenu,
   backToCategory
 } = require('../callback/main')
+const { counter } = require('../callback/product')
 
 const {
   getLanguage,
@@ -42,7 +43,8 @@ const menu = {
 const callbacks = {
   'back to menu': backToMenu,
   'feedback': getFeedbackRate,
-  'back to category': backToCategory
+  'back to category': backToCategory,
+  'counter': counter
 }
 
 

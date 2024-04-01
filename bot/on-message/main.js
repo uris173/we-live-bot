@@ -74,12 +74,15 @@ const getPhone = async (chatId, msg) => {
     if (response === 'success')
       return bot.sendMessage(chatId, translate.selectMenu, kb)
   } catch (error) {
-    bot.sendMessage(chatId, translate.errorServerResponse)
+    bot.sendMessage(chatId, translate.errorServerResponse, {
+      reply_markup: kb`1
+      `
+    })
   }
 }
 
 const getCategory = async (chatId, language) => {
-  const translate = getTranslate(language)
+  const { kb, translate } = getFullTranslate(language)
   bot.sendMessage(chatId, translate.catalog, {
     reply_markup: {
       remove_keyboard: true
@@ -104,30 +107,42 @@ const getCategory = async (chatId, language) => {
       }
     })
   } catch (error) {
-    bot.sendMessage(chatId, translate.errorServerResponse)
+    bot.sendMessage(chatId, translate.errorServerResponse, {
+      reply_markup: kb
+    })
   }
 }
 
 const getProduct = async (chatId, language, msg) => {
   const productId = msg.text.split('-')[1]
-  const translate = getTranslate(language)
+  const { kb, translate } = getFullTranslate(language)
   bot.deleteMessage(chatId, msg.message_id - 1)
   bot.deleteMessage(chatId, msg.message_id)
   try {
     const { product } = await getData(`product/${productId}?language=${language}`)
     let { img, text } = getProductInfo(product, translate.costText, translate.priceText)
-    console.log(img);
+    const count = 1
     bot.sendPhoto(chatId, img, {
       parse_mode: 'HTML',
       caption: text,
       reply_markup: {
         inline_keyboard: [
+          [
+            {text: '➖', callback_data: `counter-${count},prod-${product._id}`},
+            {text: count, callback_data: 'nothing'},
+            {text: '➕', callback_data: `counter-${count + 1},prod-${product._id}`}
+          ],
+          [{text: translate.selectAttr, callback_data: 'select attr'}],
+          [{text: translate.addToCart, callback_data: `toCart-${_id}`}],
           [{text: translate.back, callback_data: 'back to category'}]
         ]
       }
     })
   } catch (error) {
-    bot.sendMessage(chatId, translate.errorServerResponse)
+    console.error(error)
+    bot.sendMessage(chatId, translate.errorServerResponse, {
+      reply_markup: kb
+    })
   }
 }
 

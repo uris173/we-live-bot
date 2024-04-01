@@ -25,11 +25,15 @@ const uz = {
   incPhone: `<i>"Kontaktni yuborish 📞"</i> <b>tugmasini bosib telefon raqamingizni yuboring</b>`,
   errorServerResponse: "Serverdan javob yo'q. Bir oz kutib turing.",
   enterFeedback: `Siz bizning xizmatimizni baholashni tugatmagansiz, sharh qoldiring yoki <i>"O'tkazib yuborish ➡️"</i> tugmasini bosib ushbu qismni o'tkazib yuboring.`,
+  minimumCount: "Minimal miqdori 1",
+
 
   // keyboards
   requestContact: "Kontaktni yuborish 📞",
   back: "Orqaga 🔙",
   skip: "O'tkazib yuborish ➡️",
+  selectAttr: "Attribut tanlash",
+  addToCart: "Savatga qoshish 🧺",
   // menu
   catalog: "Katalog 🗂",
   aboutUs: "Biz haqimizda ℹ️",
@@ -58,11 +62,14 @@ const ru = {
   incPhone: `<b>Отправьте номер телефона нажав на кнопку</b> <i>"Отправить контакт 📞"</i>`,
   errorServerResponse: "Нет ответа от сервера. Пожалуйста подождите некоторое время.",
   enterFeedback: `Вы не закончили оценку нашего сервиса, пожалуйста оставьте коментарий или пропустите эту часть нажав на кнопку <i>"Пропустить ➡️"</i>`,
+  minimumCount: "Минимальное кол-во 1",
 
   // keyboards
   requestContact: "Отправить контакт 📞",
   back: "Назад 🔙",
   skip: "Пропустить ➡️",
+  selectAttr: "Выбрать аттрибут",
+  addToCart: "Добавить в корзину 🧺",
   // menu
   catalog: "Каталог 🗂",
   aboutUs: "О нас ℹ️",

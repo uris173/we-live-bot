@@ -33,7 +33,7 @@ const getFeedbackRate = async (chatId, language, query) => {
 const backToCategory = async (chatId, language, query) => {
   bot.answerCallbackQuery(query.id).then(async () => {
     bot.deleteMessage(chatId, query.message.message_id)
-    const translate = getTranslate(language)
+    const { kb, translate } = getFullTranslate(language)
     try {
       let { categories } = await getData(`category/all?language=${language}`)
       categories = categories.filter(val => val.title)
@@ -51,7 +51,9 @@ const backToCategory = async (chatId, language, query) => {
         }
       })
     } catch (error) {
-      bot.sendMessage(chatId, translate.errorServerResponse)
+      bot.sendMessage(chatId, translate.errorServerResponse, {
+        reply_markup: kb
+      })
     }
   })
 }

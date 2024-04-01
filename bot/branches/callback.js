@@ -14,4 +14,6 @@ bot.on('callback_query', async query => {
     callbacks['feedback'](chatId, language, query)
   if (query.data === 'back to category')
     callbacks['back to category'](chatId, language, query)
+  if (query.data.slice(0, 7) === 'counter')
+    callbacks['counter'](chatId, language, query)
 })
