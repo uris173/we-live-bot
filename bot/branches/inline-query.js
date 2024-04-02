@@ -5,7 +5,6 @@ const { getData } = require('../options/helper')
 bot.on('inline_query', async query => {
   const chatId = query.from.id
   const queryData = query.query
-  const find_user = await User.findOne({userId: chatId})
 
   if (queryData !== '') {
     let page = parseInt(query.offset) || 1
@@ -19,8 +18,8 @@ bot.on('inline_query', async query => {
         input_message_content: {
           message_text: `productId-${val._id}`
         },
-        description: val.description,
-        thumbnail_url: `${url}/${val.img[0]}`
+        description: val.description.replace(/<[^>]*>/g, ''),
+        thumbnail_url: `${url}/${val.img[0].response}`
       }
     })
 

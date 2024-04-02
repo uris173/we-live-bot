@@ -1,8 +1,10 @@
 const { bot, sliceIntoChunks } = require('../bot')
 const { languageKb } = require('../options/keyboards')
 const User = require('../../models/user')
+const CartStorage = require('../../models/cart.storage')
+const Cart = require('../../models/cart')
 const Feedback = require('../../models/feedback')
-const { getFullTranslate, postData, getTranslate, getData, getProductInfo } = require('../options/helper')
+const { getFullTranslate, postData, getTranslate, getData, getProductInfo, getCartItems } = require('../options/helper')
 
 const start = async (chatId) => {
   const findUser = await User.findOne({userId: chatId})
@@ -17,14 +19,15 @@ const start = async (chatId) => {
   if (!findUser.phone) return await User.findByIdAndUpdate(findUser._id, {action: 'enter phone'})
 
   if (feedback) return bot.sendMessage(chatId, translate.enterFeedback, {
-      parse_mode: 'HTML',
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: [ [translate.skip] ]
-      }
-    })
-
+    parse_mode: 'HTML',
+    reply_markup: {
+      resize_keyboard: true,
+      keyboard: [ [translate.skip] ]
+    }
+  })
+  
   await User.findByIdAndUpdate(findUser._id, {$set: {action: ''}})
+  await CartStorage.deleteMany({user: findUser._id})
   bot.sendMessage(chatId, translate.selectMenu, kb)
 }
 
@@ -120,7 +123,7 @@ const getProduct = async (chatId, language, msg) => {
   bot.deleteMessage(chatId, msg.message_id)
   try {
     const { product } = await getData(`product/${productId}?language=${language}`)
-    let { img, text } = getProductInfo(product, translate.costText, translate.priceText)
+    let { img, text } = getProductInfo(language, product, translate.costText, translate.priceText)
     const count = 1
     bot.sendPhoto(chatId, img, {
       parse_mode: 'HTML',
@@ -132,8 +135,10 @@ const getProduct = async (chatId, language, msg) => {
             {text: count, callback_data: 'nothing'},
             {text: '➕', callback_data: `counter-${count + 1},prod-${product._id}`}
           ],
-          [{text: translate.selectAttr, callback_data: 'select attr'}],
-          [{text: translate.addToCart, callback_data: `toCart-${_id}`}],
+          [
+            {text: translate.goToCart, callback_data: `go to cart`},
+            {text: translate.addToCart, callback_data: `toCart-${product._id}`}
+          ],
           [{text: translate.back, callback_data: 'back to category'}]
         ]
       }
@@ -207,7 +212,28 @@ const getFeedbackComment = async (chatId, msg) => {
   }
 }
 
-const getSetting = (chatId, language) => {
+const getCart = async (chatId, language) => {
+  const translate = getTranslate(language)
+  const user = await User.findOne({userId: chatId})
+  const cart = await Cart.findOne({user: user._id})
+  if (!cart) return bot.sendMessage(chatId, translate.emptyCart)
+
+  bot.sendMessage(chatId, 'cart', {
+    reply_markup: {
+      remove_keyboard: true
+    }
+  }).then(data => bot.deleteMessage(chatId, data.message_id))
+
+  let { text, inlineKb } = await getCartItems(cart, language)
+  bot.sendMessage(chatId, text, {
+    parse_mode: 'HTML',
+    reply_markup: {
+      inline_keyboard: inlineKb
+    }
+  })
+}
+
+const getSetting = async (chatId, language) => {
   const translate = getTranslate(language)
   bot.sendMessage(chatId, translate.selectAction, {
     reply_markup: {
@@ -244,5 +270,6 @@ module.exports = {
   getFeedbackComment,
   getSetting,
   getBackToMenu,
-  changelang
+  changelang,
+  getCart
 }

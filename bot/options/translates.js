@@ -15,25 +15,34 @@ const uz = {
   contactsText: `Telefon: <a href="tel:${links.phoneLink}">${links.phone}</a>\nTelegram: ${links.telegram}\nInstagram: ${links.instagram}`,
   leaveFeedbackText: "Xizmatimizga 1 dan 5 🌟 gacha baho bering",
   enterFeedbackComment: "Iltimos, sharhingizni yozing... Xizmatni yaxshilash bo'yicha har qanday taklif va fikr-mulohazalaringizni yozing.",
-  costText: "Narx:",
-  priceText: "so'm", 
   changelang: "Tilni o'zgartirish 🌐",
   chooseLang: "Til tanlang 🌐",
   selectAction: "Harakatni tanlang...",
-
+  addedProduct: "Mahsulot savatga qo'shildi! Miqdor:",
+  itemDeleted: "Mahsulot savatdan o'chirildi! ✅",
+  emptyCart: "Savatcha bosh. Menu tanlang...",
+  
   // error messages
   incPhone: `<i>"Kontaktni yuborish 📞"</i> <b>tugmasini bosib telefon raqamingizni yuboring</b>`,
   errorServerResponse: "Serverdan javob yo'q. Bir oz kutib turing.",
   enterFeedback: `Siz bizning xizmatimizni baholashni tugatmagansiz, sharh qoldiring yoki <i>"O'tkazib yuborish ➡️"</i> tugmasini bosib ushbu qismni o'tkazib yuboring.`,
   minimumCount: "Minimal miqdori 1",
-
-
+  
+  // texts
+  costText: "Narx:",
+  priceText: "so'm",
+  title: "Nomi:",
+  totalPrice: "Umumiy narx:",
+  
   // keyboards
   requestContact: "Kontaktni yuborish 📞",
   back: "Orqaga 🔙",
   skip: "O'tkazib yuborish ➡️",
   selectAttr: "Attribut tanlash",
   addToCart: "Savatga qoshish 🧺",
+  goToCart: "Savatga o'tish 🧺",
+  order: "Buyurtma 🛒",
+
   // menu
   catalog: "Katalog 🗂",
   aboutUs: "Biz haqimizda ℹ️",
@@ -52,12 +61,19 @@ const ru = {
   contactsText: `Телефон: <a href="tel:${links.phoneLink}">${links.phone}</a>\nТелеграм: ${links.telegram}\nИнстаграм: ${links.instagram}`,
   leaveFeedbackText: "Оцените пожалуйста наш сервис от 1 до 5 🌟",
   enterFeedbackComment: "Пожалуйста напишите свой отзыв... Какие есть предложения по улучшению сервиса и ваш отзыв.",
-  costText: "Цена:",
-  priceText: "сум", 
   changelang: "Изменить язык 🌐",
   chooseLang: "Выберите язык 🌐",
   selectAction: "Выберите действие...",
-
+  addedProduct: "Товар добавлен в корзину! Кол-во:",
+  itemDeleted: "Товар удален из корзины! ✅",
+  emptyCart: "Корзина пуста. Выберите меню...",
+  
+  // texts
+  costText: "Цена:",
+  priceText: "сум", 
+  title: "Наименование:",
+  totalPrice: "Итого:",
+  
   // error messages
   incPhone: `<b>Отправьте номер телефона нажав на кнопку</b> <i>"Отправить контакт 📞"</i>`,
   errorServerResponse: "Нет ответа от сервера. Пожалуйста подождите некоторое время.",
@@ -70,6 +86,9 @@ const ru = {
   skip: "Пропустить ➡️",
   selectAttr: "Выбрать аттрибут",
   addToCart: "Добавить в корзину 🧺",
+  goToCart: "Перейти в корзину 🧺",
+  order: "Заказать 🛒",
+
   // menu
   catalog: "Каталог 🗂",
   aboutUs: "О нас ℹ️",

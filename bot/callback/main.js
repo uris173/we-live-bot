@@ -1,5 +1,6 @@
 const { bot, sliceIntoChunks } = require('../bot');
 const User = require('../../models/user')
+const CartStorage = require('../../models/cart.storage')
 const Feedback = require('../../models/feedback')
 const { getFullTranslate, getTranslate, getData } = require('../options/helper');
 
@@ -11,12 +12,12 @@ const backToMenu = async (chatId, language, query) => {
   })
 }
 
-const getFeedbackRate = async (chatId, language, query) => {
+const getFeedbackRate = async (chatId, language, userId, query) => {
   bot.answerCallbackQuery(query.id).then(async () => {
     const translate = getTranslate(language)
     
     const rate = query.data.split('-')[1]
-    const user = await User.findOne({userId: chatId})
+    const user = await User.findById({_id: userId})
     await new Feedback({user: user._id, rate}).save()
     await User.findByIdAndUpdate(user._id, {$set: {action: 'enter feedback comment'}})
 
@@ -30,8 +31,9 @@ const getFeedbackRate = async (chatId, language, query) => {
   })
 }
 
-const backToCategory = async (chatId, language, query) => {
+const backToCategory = async (chatId, language, userId, query) => {
   bot.answerCallbackQuery(query.id).then(async () => {
+    await CartStorage.deleteMany({user: userId})
     bot.deleteMessage(chatId, query.message.message_id)
     const { kb, translate } = getFullTranslate(language)
     try {
