@@ -77,10 +77,8 @@ const getPhone = async (chatId, msg) => {
     if (response === 'success')
       return bot.sendMessage(chatId, translate.selectMenu, kb)
   } catch (error) {
-    bot.sendMessage(chatId, translate.errorServerResponse, {
-      reply_markup: kb`1
-      `
-    })
+    console.error(error)
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
   }
 }
 
@@ -110,9 +108,8 @@ const getCategory = async (chatId, language) => {
       }
     })
   } catch (error) {
-    bot.sendMessage(chatId, translate.errorServerResponse, {
-      reply_markup: kb
-    })
+    console.error(error)
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
   }
 }
 
@@ -145,9 +142,7 @@ const getProduct = async (chatId, language, msg) => {
     })
   } catch (error) {
     console.error(error)
-    bot.sendMessage(chatId, translate.errorServerResponse, {
-      reply_markup: kb
-    })
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
   }
 }
 
@@ -162,6 +157,21 @@ const getContacts = async (chatId, language) => {
   let translate = getTranslate(language)
   bot.sendMessage(chatId, translate.contactsText, {
     parse_mode: 'HTML'
+  })
+}
+
+const getMembership = async (chatId, language) => {
+  const translate = getTranslate(language)
+  const user = await User.findOne({userId: chatId})
+  if (user?.membership) return bot.sendMessage(chatId, translate.existsMembership)
+
+  await User.findByIdAndUpdate(user?._id, {$set: {action: 'enter name'}})
+  bot.sendMessage(chatId, translate.enterName, {
+    parse_mode: 'HTML',
+    reply_markup: {
+      resize_keyboard: true,
+      keyboard: [ [translate.back] ]
+    }
   })
 }
 
@@ -207,7 +217,8 @@ const getFeedbackComment = async (chatId, msg) => {
         await bot.sendMessage(chatId, translate.selectMenu, kb)
       }
     } catch (error) {
-      bot.sendMessage(chatId, translate.errorServerResponse)
+      console.error(error)
+      bot.sendMessage(chatId, translate.errorServerResponse, kb)
     }
   }
 }
@@ -266,6 +277,7 @@ module.exports = {
   getProduct,
   getAboutUs,
   getContacts,
+  getMembership,
   enterFeedback,
   getFeedbackComment,
   getSetting,

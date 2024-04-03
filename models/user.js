@@ -6,7 +6,13 @@ const user = new Schema({
   username: String,
   phone: String,
   action: String,
-  language: String
+  language: String,
+  birthDay: String,
+  passNumber: String,
+  membership: {
+    type: Boolean,
+    default: false
+  }
 })
 
 

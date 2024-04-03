@@ -14,7 +14,8 @@ const uzMenu = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      [uz.catalog, uz.aboutUs, uz.contacts],
+      [uz.catalog, uz.aboutUs],
+      [uz.contacts, uz.membership],
       [uz.feedback, uz.cart],
       [uz.settings]
     ]
@@ -25,7 +26,8 @@ const ruMenu = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      [ru.catalog, ru.aboutUs, ru.contacts],
+      [ru.catalog, ru.aboutUs],
+      [ru.contacts, ru.membership],
       [ru.feedback, ru.cart],
       [ru.settings]
     ]

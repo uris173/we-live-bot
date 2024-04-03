@@ -21,12 +21,20 @@ const uz = {
   addedProduct: "Mahsulot savatga qo'shildi! Miqdor:",
   itemDeleted: "Mahsulot savatdan o'chirildi! ✅",
   emptyCart: "Savatcha bosh. Menu tanlang...",
+  successOrder: "Buyurtma muafaqiyatli amalga oshirildi! ✅",
+  existsMembership: "Siz jamiyatimizning a'zosisiz!",
+  membershipMessage: "Shaklni muvaffaqiyatli to'ldirdingiz! Tez orada vakilimiz siz bilan bog'lanishini kuting. ⏳",
   
   // error messages
   incPhone: `<i>"Kontaktni yuborish 📞"</i> <b>tugmasini bosib telefon raqamingizni yuboring</b>`,
   errorServerResponse: "Serverdan javob yo'q. Bir oz kutib turing.",
   enterFeedback: `Siz bizning xizmatimizni baholashni tugatmagansiz, sharh qoldiring yoki <i>"O'tkazib yuborish ➡️"</i> tugmasini bosib ushbu qismni o'tkazib yuboring.`,
   minimumCount: "Minimal miqdori 1",
+
+  // membership
+  enterName: "Ism va familiyangizni yozing <b>(passport boyicha)</b>",
+  enterBirth: `Tog'ilgan kun <b>(kun, oy, yil "01.01.1999")</b>`,
+  enterPassNum: "Passport seriya momeri <b>(AB1234567)</b>",
   
   // texts
   costText: "Narx:",
@@ -42,11 +50,12 @@ const uz = {
   addToCart: "Savatga qoshish 🧺",
   goToCart: "Savatga o'tish 🧺",
   order: "Buyurtma 🛒",
-
+  
   // menu
   catalog: "Katalog 🗂",
   aboutUs: "Biz haqimizda ℹ️",
   contacts: "Kontaktlar 📞",
+  membership: "A'zo bolish 🙋",
   feedback: "Sharh qoldiring ✍️",
   cart: "Savat 🧺",
   settings: "Sozlamalar ⚙️"
@@ -67,12 +76,20 @@ const ru = {
   addedProduct: "Товар добавлен в корзину! Кол-во:",
   itemDeleted: "Товар удален из корзины! ✅",
   emptyCart: "Корзина пуста. Выберите меню...",
+  successOrder: "Заказ успешно оформлен! ✅",
+  existsMembership: "Вы уже являетесь членом нашего общества!",
+  membershipMessage: "Вы успешно заполнили форму! Ожидайте в скором времени с вами свяжется наш представитель. ⏳",
   
   // texts
   costText: "Цена:",
   priceText: "сум", 
   title: "Наименование:",
   totalPrice: "Итого:",
+  
+  // membership
+  enterName: "Напишите имя и фамилию <b>(по пасспорту)</b>",
+  enterBirth: `Дата рождения <b>(день, месяц, год "01.01.1999")</b>`,
+  enterPassNum: "Серийный номер пасспорта <b>(AB1234567)</b>",
   
   // error messages
   incPhone: `<b>Отправьте номер телефона нажав на кнопку</b> <i>"Отправить контакт 📞"</i>`,
@@ -93,6 +110,7 @@ const ru = {
   catalog: "Каталог 🗂",
   aboutUs: "О нас ℹ️",
   contacts: "Контакты 📞",
+  membership: "Стать членом 🙋",
   feedback: "Оставить отзыв ✍️",
   cart: "Корзина 🧺",
   settings: "Настройки ⚙️"

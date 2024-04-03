@@ -53,9 +53,8 @@ const backToCategory = async (chatId, language, userId, query) => {
         }
       })
     } catch (error) {
-      bot.sendMessage(chatId, translate.errorServerResponse, {
-        reply_markup: kb
-      })
+      console.error(error)
+      bot.sendMessage(chatId, translate.errorServerResponse, kb)
     }
   })
 }

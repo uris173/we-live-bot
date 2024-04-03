@@ -1,4 +1,4 @@
-const { deleteCartItem } = require('../callback/cart')
+const { deleteCartItem, order } = require('../callback/cart')
 const {
   getFeedbackRate,
   backToMenu,
@@ -17,8 +17,10 @@ const {
   getSetting,
   getBackToMenu,
   changelang,
-  getCart
+  getCart,
+  getMembership
 } = require('../on-message/main')
+const { getName, enterBirth, getPassNum } = require('../on-message/membership')
 const { uz, ru } = require('./translates')
 
 const userMenuListener = (lang, text) => {
@@ -29,18 +31,22 @@ const userMenuListener = (lang, text) => {
 const userAction = {
   'enter language': getLanguage,
   'enter phone': getPhone,
-  'enter feedback comment': getFeedbackComment
+  'enter feedback comment': getFeedbackComment,
+  'enter name': getName,
+  'enter birth': enterBirth,
+  'enter pass num': getPassNum
 }
 
 const menu = {
   'catalog': getCategory,
   'aboutUs': getAboutUs,
   'contacts': getContacts,
+  'membership': getMembership,
   'feedback': enterFeedback,
   'settings': getSetting,
   'back': getBackToMenu,
   'changelang': changelang,
-  'cart': getCart
+  'cart': getCart,
 }
 
 const callbacks = {
@@ -50,7 +56,8 @@ const callbacks = {
   'counter': counter,
   'toCart': addToCart,
   'go to cart': goToCart,
-  'delete': deleteCartItem
+  'delete': deleteCartItem,
+  'order': order
 }
 
 

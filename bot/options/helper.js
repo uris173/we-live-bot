@@ -14,6 +14,13 @@ const postData = async (path, data) => {
   if (response.data?.msg || response.data) return 'success'
 }
 
+const putData = async (path, data) => {
+  let response = await axios.put(`${url}/${path}`, {
+    data
+  })
+  if (response.data?.msg || response.data) return 'success'
+}
+
 const getData = async (path) => {
   let response = await axios.get(`${url}/${path}`)
   if (response.status === 200) return response.data
@@ -63,6 +70,7 @@ module.exports = {
   getFullTranslate, 
   getTranslate,
   postData,
+  putData,
   getData,
   getProductInfo,
   getCartItems

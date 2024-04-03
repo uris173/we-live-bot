@@ -14,12 +14,12 @@ bot.on('message', async msg => {
   if (user) {
     let language = user?.language || 'uz'
     if (user.action !== '')
-      userAction[user?.action](chatId, msg, text)
+      return userAction[user?.action](chatId, msg, text, user._id)
 
     if (menu[userMenuListener(language, text)])
       return menu[userMenuListener(language, text)](chatId, language, msg)
 
     if (text?.slice(0, 9) === 'productId')
-      getProduct(chatId, language, msg)
+      return getProduct(chatId, language, msg)
   }
 })

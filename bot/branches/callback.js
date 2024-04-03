@@ -22,4 +22,6 @@ bot.on('callback_query', async query => {
     return callbacks['go to cart'](chatId, language, user._id, query)
   if (query.data.slice(0, 6) === 'delete')
     return callbacks['delete'](chatId, language, user._id, query)
+  if (query.data === 'order')
+    return callbacks['order'](chatId, language, user._id, query)
 })

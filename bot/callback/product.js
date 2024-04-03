@@ -2,7 +2,7 @@ const { bot } = require('../bot')
 const User = require('../../models/user')
 const CartStorage = require('../../models/cart.storage')
 const Cart = require('../../models/cart')
-const { getTranslate, getCartItems } = require('../options/helper')
+const { getTranslate, getCartItems, getFullTranslate } = require('../options/helper')
 // const Cart = require('../../models/')
 
 const counter = async (chatId, language, userId, query) => {
@@ -78,15 +78,24 @@ const addToCart = async (chatId, language, userId, query) => {
 
 const goToCart = async (chatId, language, userId, query) => {
   bot.answerCallbackQuery(query.id)
+  const { translate, kb } = getFullTranslate(language)
   const cart = await Cart.findOne({user: userId})
-  let { text, inlineKb } = await getCartItems(cart, language)
-  bot.deleteMessage(chatId, query.message.message_id)
-  bot.sendMessage(chatId, text, {
-    parse_mode: 'HTML',
-    reply_markup: {
-      inline_keyboard: inlineKb
-    }
-  })
+  await CartStorage.findOneAndDelete({user: userId})
+  
+  try {
+    let { text, inlineKb } = await getCartItems(cart, language)
+    bot.deleteMessage(chatId, query.message.message_id)
+    bot.sendMessage(chatId, text, {
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: inlineKb
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    bot.deleteMessage(chatId, query.message.message_id)
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
+  }
 }
 
 
