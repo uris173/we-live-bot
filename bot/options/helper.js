@@ -23,8 +23,11 @@ const putData = async (path, data) => {
 
 const getData = async (path) => {
   let response = await axios.get(`${url}/${path}`)
-  if (response.status === 200) return response.data
-  else return 'error'
+  try {
+    if (response.status === 200) return response.data
+  } catch (error) {
+    return error
+  }
 }
 
 const getProductInfo = (language, product, costText, priceText) => {

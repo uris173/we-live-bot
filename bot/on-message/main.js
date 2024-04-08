@@ -4,7 +4,7 @@ const User = require('../../models/user')
 const CartStorage = require('../../models/cart.storage')
 const Cart = require('../../models/cart')
 const Feedback = require('../../models/feedback')
-const { getFullTranslate, postData, getTranslate, getData, getProductInfo, getCartItems } = require('../options/helper')
+const { getFullTranslate, postData, getTranslate, getData, getProductInfo, getCartItems, putData } = require('../options/helper')
 
 const start = async (chatId) => {
   const findUser = await User.findOne({userId: chatId})
@@ -48,8 +48,16 @@ const getLanguage = async (chatId, msg, text) => {
         }
       })
     } else {
-      await User.findByIdAndUpdate(findUser._id, {$set: {action: ''}})
-      bot.sendMessage(chatId, translate.selectMenu, kb)
+      let user = await User.findByIdAndUpdate(findUser._id, {$set: {action: ''}})
+      try {
+        let response = await putData('user', user)
+        if (response) {
+          bot.sendMessage(chatId, translate.selectMenu, kb)
+        }
+      } catch (error) {
+        console.error(error)
+        bot.sendMessage(chatId, translate.errorServerResponse, kb)
+      }
     }
   }
 }
