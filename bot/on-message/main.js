@@ -140,10 +140,7 @@ const getProduct = async (chatId, language, msg) => {
             {text: count, callback_data: 'nothing'},
             {text: '➕', callback_data: `counter-${count + 1},prod-${product._id}`}
           ],
-          [
-            {text: translate.goToCart, callback_data: `go to cart`},
-            {text: translate.addToCart, callback_data: `toCart-${product._id}`}
-          ],
+          [{text: translate.addToCart, callback_data: `toCart-${product._id}`}, {text: translate.goToCart, callback_data: `go to cart`}],
           [{text: translate.back, callback_data: 'back to category'}]
         ]
       }

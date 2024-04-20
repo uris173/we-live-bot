@@ -31,12 +31,7 @@ const getData = async (path) => {
 }
 
 const getProductInfo = (language, product, costText, priceText) => {
-  let values = ``
-  let attributes = product?.attributes.filter(val => val.language === language)
-  attributes.forEach(element => {
-    values += `${element?.title.charAt(0).toUpperCase() + element?.title.slice(1)}: <b>${element?.value}</b>\n`
-  })
-  const text = `<i>${product.category.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price.toLocaleString()} ${priceText}\n\n${product.description.replace(/<[^>]*>/g, '')}\n\n${values}`
+  const text = `<i>${product.category.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price.toLocaleString()} ${priceText}\n\n${product.description.replace(/<[^>]*>/g, '')}`
   return {
     img: `${url}/${product.img[0].response}`,
     text,

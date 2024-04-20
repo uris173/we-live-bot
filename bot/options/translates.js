@@ -47,8 +47,8 @@ const uz = {
   back: "Orqaga 🔙",
   skip: "O'tkazib yuborish ➡️",
   selectAttr: "Attribut tanlash",
-  addToCart: "Savatga qoshish 🧺",
-  goToCart: "Savatga o'tish 🧺",
+  addToCart: "🧺 qoshish",
+  goToCart: "🧺 o'tish",
   order: "Buyurtma 🛒",
   
   // menu
@@ -102,8 +102,8 @@ const ru = {
   back: "Назад 🔙",
   skip: "Пропустить ➡️",
   selectAttr: "Выбрать аттрибут",
-  addToCart: "Добавить в корзину 🧺",
-  goToCart: "Перейти в корзину 🧺",
+  addToCart: "Добавить 🧺",
+  goToCart: "Перейти 🧺",
   order: "Заказать 🛒",
 
   // menu
