@@ -30,8 +30,16 @@ const getData = async (path) => {
   }
 }
 
-const getProductInfo = (language, product, costText, priceText) => {
-  const text = `<i>${product.category.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price.toLocaleString()} ${priceText}\n\n${product.description.replace(/<[^>]*>/g, '')}`
+const getProductInfo = (product, costText, priceText) => {
+  const text = `<i>${product.category?.title}</i>\n<b>${product.title}\n</b>${costText} ${product.price.toLocaleString()} ${priceText}\n\n${product.description.replace(/<[^>]*>/g, '')}`
+  return {
+    img: `${url}/${product.img[0].response}`,
+    text,
+  }
+}
+
+const getBonusProductInfo = (product, costText, priceText) => {
+  const text = `<i>${product.bonus_category?.title}</i>\n<b>${product.title}\n\n</b>${product.description.replace(/<[^>]*>/g, '')}`
   return {
     img: `${url}/${product.img[0].response}`,
     text,
@@ -70,6 +78,7 @@ module.exports = {
   postData,
   putData,
   getData,
+  getBonusProductInfo,
   getProductInfo,
   getCartItems
 }

@@ -5,7 +5,7 @@ const languageKb = {
     parse_mode: 'HTML',
     resize_keyboard: true,
     keyboard: [
-      ["O'zbek tili 🇺🇿", 'Русский язык 🇷🇺']
+      ["🇺🇿 O'zbek tili", '🇷🇺 Русский язык']
     ]
   }
 }
@@ -15,8 +15,8 @@ const uzMenu = {
     resize_keyboard: true,
     keyboard: [
       [uz.catalog, uz.aboutUs],
-      [uz.contacts, uz.membership],
-      [uz.feedback, uz.cart],
+      [uz.contacts, uz.bonus, uz.cart],
+      [uz.feedback, uz.membership],
       [uz.settings]
     ]
   }
@@ -27,8 +27,8 @@ const ruMenu = {
     resize_keyboard: true,
     keyboard: [
       [ru.catalog, ru.aboutUs],
-      [ru.contacts, ru.membership],
-      [ru.feedback, ru.cart],
+      [ru.contacts, ru.bonus, ru.cart],
+      [ru.feedback, ru.membership],
       [ru.settings]
     ]
   }

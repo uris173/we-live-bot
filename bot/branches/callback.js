@@ -24,4 +24,6 @@ bot.on('callback_query', async query => {
     return callbacks['delete'](chatId, language, user._id, query)
   if (query.data === 'order')
     return callbacks['order'](chatId, language, user._id, query)
+  if (query.data === 'back to bonus')
+    return callbacks['back to bonus'](chatId, language, user._id, query)
 })

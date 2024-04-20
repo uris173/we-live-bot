@@ -24,10 +24,8 @@ const counter = async (chatId, language, userId, query) => {
           {text: count, callback_data: 'nothing'},
           {text: '➕', callback_data: `counter-${count + 1},prod-${_id}`}
         ],
-        [
-          {text: translate.goToCart, callback_data: `go to cart`},
-          {text: translate.addToCart, callback_data: `toCart-${_id}`}
-        ],
+        [{text: translate.addToCart, callback_data: `toCart-${_id}`}],
+        [{text: translate.goToCart, callback_data: `go to cart`}],
         [{text: translate.back, callback_data: 'back to category'}]
       ]
     }, {chat_id: chatId, message_id: query.message.message_id})
@@ -67,10 +65,8 @@ const addToCart = async (chatId, language, userId, query) => {
         {text: 1, callback_data: 'nothing'},
         {text: '➕', callback_data: `counter-${2},prod-${_id}`}
       ],
-      [
-        {text: translate.goToCart, callback_data: `go to cart`}, 
-        {text: translate.addToCart, callback_data: `toCart-${_id}`}
-      ],
+      [{text: translate.addToCart, callback_data: `toCart-${_id}`}],
+      [{text: translate.goToCart, callback_data: `go to cart`}],
       [{text: translate.back, callback_data: 'back to category'}]
     ]
   }, {chat_id: chatId, message_id: query.message.message_id})

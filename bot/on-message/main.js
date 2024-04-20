@@ -4,7 +4,7 @@ const User = require('../../models/user')
 const CartStorage = require('../../models/cart.storage')
 const Cart = require('../../models/cart')
 const Feedback = require('../../models/feedback')
-const { getFullTranslate, postData, getTranslate, getData, getProductInfo, getCartItems, putData } = require('../options/helper')
+const { getFullTranslate, postData, getTranslate, getData, getProductInfo, getCartItems, putData, getBonusProductInfo } = require('../options/helper')
 
 const start = async (chatId) => {
   const findUser = await User.findOne({userId: chatId})
@@ -33,7 +33,7 @@ const start = async (chatId) => {
 
 const getLanguage = async (chatId, msg, text) => {
   if (text !== '/start') {
-    let language = text === "O'zbek tili 🇺🇿" ? 'uz' : 'ru'
+    let language = text === "🇺🇿 O'zbek tili" ? 'uz' : 'ru'
     let { kb, translate } = getFullTranslate(language)
   
     const findUser = await User.findOne({userId: chatId})
@@ -100,6 +100,7 @@ const getCategory = async (chatId, language) => {
   .then(data => bot.deleteMessage(chatId, data.message_id))
 
   try {
+    await User.findOneAndUpdate({ userId: chatId }, { $set: { action: 'category products' } })
     let { categories } = await getData(`category/all?language=${language}`)
     categories = categories.filter(val => val.title)
     categories = categories.map(({title}) => ({
@@ -128,7 +129,7 @@ const getProduct = async (chatId, language, msg) => {
   bot.deleteMessage(chatId, msg.message_id)
   try {
     const { product } = await getData(`product/${productId}?language=${language}`)
-    let { img, text } = getProductInfo(language, product, translate.costText, translate.priceText)
+    let { img, text } = getProductInfo(product, translate.costText, translate.priceText)
     const count = 1
     bot.sendPhoto(chatId, img, {
       parse_mode: 'HTML',
@@ -140,7 +141,8 @@ const getProduct = async (chatId, language, msg) => {
             {text: count, callback_data: 'nothing'},
             {text: '➕', callback_data: `counter-${count + 1},prod-${product._id}`}
           ],
-          [{text: translate.addToCart, callback_data: `toCart-${product._id}`}, {text: translate.goToCart, callback_data: `go to cart`}],
+          [{text: translate.addToCart, callback_data: `toCart-${product._id}`}],
+          [{text: translate.goToCart, callback_data: `go to cart`}],
           [{text: translate.back, callback_data: 'back to category'}]
         ]
       }
@@ -156,6 +158,61 @@ const getAboutUs = async (chatId, language) => {
   bot.sendMessage(chatId, translate.aboutUsText, {
     parse_mode: 'HTML'
   })
+}
+
+const getBonuses = async (chatId, language) => {
+  const { kb, translate } = getFullTranslate(language)
+  bot.sendMessage(chatId, translate.bonus, {
+    reply_markup: {
+      remove_keyboard: true
+    }
+  })
+  .then(data => bot.deleteMessage(chatId, data.message_id))
+
+  try {
+    await User.findOneAndUpdate({ userId: chatId }, { $set: { action: 'bonus products' } })
+    let { categories } = await getData(`bonuscategory/all?language=${language}`)
+    categories = categories.filter(val => val.title)
+    categories = categories.map(({title}) => ({
+      text: title || 'titleNotFound',
+      switch_inline_query_current_chat: title || 'titleNotFound'
+    }))
+
+    let slicedVal = sliceIntoChunks(categories, 2)
+    slicedVal.push([{text: translate.back, callback_data: 'back to menu'}])
+
+    bot.sendMessage(chatId, translate.bonusText, {
+      reply_markup: {
+        inline_keyboard: slicedVal
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
+  }
+}
+
+const getBonus = async (chatId, language, msg) => {
+  const bonusId = msg.text.split('-')[1]
+  const { kb, translate } = getFullTranslate(language)
+  bot.deleteMessage(chatId, msg.message_id - 1)
+  bot.deleteMessage(chatId, msg.message_id)
+  try {
+    const { bonus_product } = await getData(`bonusproduct/${bonusId}?language=${language}`)
+    let { img, text } = getBonusProductInfo(bonus_product, translate.costText, translate.priceText)
+    bot.sendPhoto(chatId, img, {
+      parse_mode: 'HTML',
+      caption: text,
+      reply_markup: {
+        inline_keyboard: [
+          [{text: translate.back, callback_data: 'back to bonus'}]
+        ]
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    bot.sendMessage(chatId, translate.errorServerResponse, kb)
+  }
 }
 
 const getContacts = async (chatId, language) => {
@@ -281,6 +338,8 @@ module.exports = {
   getCategory,
   getProduct,
   getAboutUs,
+  getBonuses,
+  getBonus,
   getContacts,
   getMembership,
   enterFeedback,

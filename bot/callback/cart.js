@@ -1,6 +1,6 @@
 const { bot } = require('../bot')
 const Cart = require('../../models/cart')
-const { getTranslate, getFullTranslate, postData } = require('../options/helper')
+const { getFullTranslate, postData, getCartItems } = require('../options/helper')
 
 const deleteCartItem = async (chatId, language, userId, query) => {
   const _id = query.data.split('-')[1]

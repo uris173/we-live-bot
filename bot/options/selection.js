@@ -2,7 +2,8 @@ const { deleteCartItem, order } = require('../callback/cart')
 const {
   getFeedbackRate,
   backToMenu,
-  backToCategory
+  backToCategory,
+  backToBonus
 } = require('../callback/main')
 const { counter, addToCart, goToCart } = require('../callback/product')
 
@@ -18,7 +19,8 @@ const {
   getBackToMenu,
   changelang,
   getCart,
-  getMembership
+  getMembership,
+  getBonuses
 } = require('../on-message/main')
 const { getName, enterBirth, getPassNum } = require('../on-message/membership')
 const { uz, ru } = require('./translates')
@@ -40,6 +42,7 @@ const userAction = {
 const menu = {
   'catalog': getCategory,
   'aboutUs': getAboutUs,
+  'bonus': getBonuses,
   'contacts': getContacts,
   'membership': getMembership,
   'feedback': enterFeedback,
@@ -53,6 +56,7 @@ const callbacks = {
   'back to menu': backToMenu,
   'feedback': getFeedbackRate,
   'back to category': backToCategory,
+  'back to bonus': backToBonus,
   'counter': counter,
   'toCart': addToCart,
   'go to cart': goToCart,

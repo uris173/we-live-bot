@@ -14,6 +14,7 @@ const getName = async (chatId, language, text) => {
       }
     })
   }
+  await User.findOneAndUpdate({ userId: chatId }, {$set: { action: '' }})
   bot.sendMessage(chatId, translate.selectMenu, kb)
 }
 

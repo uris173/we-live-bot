@@ -5,6 +5,7 @@ const Feedback = require('../../models/feedback')
 const { getFullTranslate, getTranslate, getData } = require('../options/helper');
 
 const backToMenu = async (chatId, language, query) => {
+  await User.findOneAndUpdate({ userId: chatId }, { $set: { action: '' } })
   bot.answerCallbackQuery(query.id).then(() => {
     const { kb, translate } = getFullTranslate(language)
     bot.deleteMessage(chatId, query.message.message_id)
@@ -37,7 +38,37 @@ const backToCategory = async (chatId, language, userId, query) => {
     bot.deleteMessage(chatId, query.message.message_id)
     const { kb, translate } = getFullTranslate(language)
     try {
+      await User.findOneAndUpdate({ userId: chatId }, { $set: { action: 'category products' } })
       let { categories } = await getData(`category/all?language=${language}`)
+      categories = categories.filter(val => val.title)
+      categories = categories.map(({title}) => ({
+        text: title || 'titleNotFound',
+        switch_inline_query_current_chat: title || 'titleNotFound'
+      }))
+
+      let slicedVal = sliceIntoChunks(categories, 2)
+      slicedVal.push([{text: translate.back, callback_data: 'back to menu'}])
+    
+      bot.sendMessage(chatId, translate.catalogText, {
+        reply_markup: {
+          inline_keyboard: slicedVal
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      bot.sendMessage(chatId, translate.errorServerResponse, kb)
+    }
+  })
+}
+
+const backToBonus = async (chatId, language, userId, query) => {
+  bot.answerCallbackQuery(query.id).then(async () => {
+    await CartStorage.deleteMany({user: userId})
+    bot.deleteMessage(chatId, query.message.message_id)
+    const { kb, translate } = getFullTranslate(language)
+    try {
+      await User.findOneAndUpdate({ userId: chatId }, { $set: { action: 'bonus products' } })
+      let { categories } = await getData(`bonuscategory/all?language=${language}`)
       categories = categories.filter(val => val.title)
       categories = categories.map(({title}) => ({
         text: title || 'titleNotFound',
@@ -63,5 +94,6 @@ const backToCategory = async (chatId, language, userId, query) => {
 module.exports = {
   backToMenu,
   getFeedbackRate,
-  backToCategory
+  backToCategory,
+  backToBonus
 }
